@@ -103,6 +103,7 @@ def binary_mask_gloper(
     learning_rate = 0.001, 
     num_classes = 2, 
     t = 0.5,
+    reverse = False,
     optimizer_name = "AdamW"
 ):
     preprocess = transform_prep_rgb(pxl_size)
@@ -154,6 +155,8 @@ def binary_mask_gloper(
         fur_1 = fur_weights_1 / total_conf_1
         bg_1  = bg_weights_1 / total_conf_1
         binary_fur_mask = (fur_1 > t).float()
+        if reverse:
+            binary_fur_mask = cv2.bitwise_not(binary_fur_mask)
         binary_masks.append(binary_fur_mask)
 
     return binary_masks
